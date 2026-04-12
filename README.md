@@ -29,8 +29,8 @@
         * [3) Modular Version - Mains](#modular-version---mains)
     * [🔁 Firmware Flow](#firmware-flow)
     * [📡 MQTT Design](#mqtt-design)
-    * [🛢 Database Design](#️database-design)
-      * [📁 Database Schema](#️database-schema)
+    * [🛢 Database Design](#database-design)
+      * [📁 Database Schema](#database-schema)
     * [🔌 API Design](#api-design)
     * [🤖 ML Pipeline](#ml-pipeline)
 
@@ -78,7 +78,7 @@
 * Inefficient manual monitoring
 * Poor workforce utilization
 
-<img width="700" height=auto alt="image" src="https://github.com/user-attachments/assets/df9fa833-d176-4366-a972-1271010217e9" />
+<img width="600" height=auto alt="vision_1" src="https://github.com/user-attachments/assets/3c030267-1cc1-4869-bbaf-4f6fba875003" />
 
 ---
 
@@ -172,18 +172,18 @@ Sensors → ESP32 Microcontroller → MQTT → FastAPI Backend → MongoDB Datab
 
 #### Hardware Block Diagrams
 
-##### 1) Single Bin Version – Battery + Solar
-<img width="817" height="779" alt="image" src="https://github.com/user-attachments/assets/833ce9c8-6b52-49a9-8739-1eaec0b7ce8d" />
+##### Single Bin Version – Battery + Solar
+<img width="800" height=auto alt="image" src="https://github.com/user-attachments/assets/de395de0-af69-40f3-adaa-acb3ccf6c64e" />
 
-<br><br>
+<br>
 
-##### 2) Single Bin Version – Mains + Backup + Solar
-<img width="647" height="810" alt="image" src="https://github.com/user-attachments/assets/cde5136b-a20d-4c24-8f6a-91128a6db477" />
+##### Single Bin Version – Mains + Backup + Solar
+<img width="700" height=auto alt="image" src="https://github.com/user-attachments/assets/458187a3-53b8-43da-a53e-03bab7ff204a" />
 
-<br><br>
+<br>
 
-##### 3) Modular Version - Mains
-<img width="2721" height="1502" alt="mermaid-diagram (4)" src="https://github.com/user-attachments/assets/41ede0c6-120e-4165-a329-f6d8aa3e3423" />
+##### Modular Version - Mains
+<img width="1000" height=auto alt="image" src="https://github.com/user-attachments/assets/e683b943-87e3-43cd-837e-bc623e6d24e2" />
 
 ----
 
@@ -205,7 +205,7 @@ Sensors → ESP32 Microcontroller → MQTT → FastAPI Backend → MongoDB Datab
 
 ### Database Design
 
-<img width="932" height="428" alt="image" src="https://github.com/user-attachments/assets/69433da7-76f8-4422-baea-cc03e919c766" />
+<img width="600" height=auto alt="image" src="https://github.com/user-attachments/assets/69433da7-76f8-4422-baea-cc03e919c766" />
 
 #### Database Schema
 
