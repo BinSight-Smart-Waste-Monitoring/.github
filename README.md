@@ -29,9 +29,10 @@
         * [3) Modular Version - Mains](#modular-version---mains)
     * [🔁 Firmware Flow](#firmware-flow)
     * [📡 MQTT Design](#mqtt-design)
-    * [🛢 Database Schema](#️-database-schema)
-    * [🔌 API Design](#-api-design)
-    * [🤖 ML Pipeline](#-ml-pipeline)
+    * [🛢 Database Design](#️database-design)
+      * [📁 Database Schema](#️database-schema)
+    * [🔌 API Design](#api-design)
+    * [🤖 ML Pipeline](#ml-pipeline)
 
 9. [📱 **Application Features**](#application-features)
 
@@ -202,9 +203,11 @@ Sensors → ESP32 Microcontroller → MQTT → FastAPI Backend → MongoDB Datab
 
 ----
 
-### Database Schema
+### Database Design
 
-#### Collections
+<img width="932" height="428" alt="image" src="https://github.com/user-attachments/assets/69433da7-76f8-4422-baea-cc03e919c766" />
+
+#### Database Schema
 
 ##### admins
 ```
