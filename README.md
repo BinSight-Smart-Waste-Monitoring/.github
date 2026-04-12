@@ -1,1 +1,553 @@
-# .github
+# 🚮 BinSight: Smart Waste Monitoring System
+
+### BinSight is an IoT-based system for real-time waste bin monitoring using multi-sensor integration. It enables data-driven waste collection with alerts, analytics, and scalable deployment models.
+
+---
+
+## TABLE OF CONTENTS
+1. [📝 **Overview**](#overview)
+
+2. [⚠️ **Problem Statement**](#problem-statement)
+
+3. [💡 **Proposed Solution**](#proposed-solution)
+
+4. [🧩 **Key Features**](#key-features)
+
+5. [📦 **System Versions**](#system-versions)
+
+6. [⚙️ **Tools and Technologies**](#tools-and-technologies)
+
+7. [💵 **Technical Feasibility**](#technical-feasibility)
+
+8. [🖧 **System Design**](#system-design)
+    * [🔄 Data Flow](#data-flow)
+    * [🧱 Layered Architecture](#layered-architecture)
+    * [🔩 Hardware Design](#hardware-design)
+      * [🖧 Hardware Block Diagrams](#hardware-block-diagrams)
+        * [1) Single Bin Version - Battery + Solar](#single-bin-version--battery--solar)
+        * [2) Single Bin Version - Mains + Backup + Solar](#single-bin-version--mains--backup--solar)
+        * [3) Modular Version - Mains](#modular-version---mains)
+    * [🔁 Firmware Flow](#firmware-flow)
+    * [📡 MQTT Design](#mqtt-design)
+    * [🛢 Database Schema](#️-database-schema)
+    * [🔌 API Design](#-api-design)
+    * [🤖 ML Pipeline](#-ml-pipeline)
+
+9. [📱 **Application Features**](#application-features)
+
+10. [👥 **User Interfaces**](#user-interfaces)
+    * [🧑‍💼 Admin](#admin-supervisor--facility-manager)
+    * [👷 Worker](#worker-sanitation-staff--operator)
+  
+11. [📈 **Single Bin and Zone Status Cards**](#single-bin-and-zone-status-cards)
+    * [Single Bin Card](#single-bin-card)
+    * [Zone Card](#zone-card)
+    * [Status Logic](#status-logic)
+
+13. [🎯 **Customer Segments**](#customer-segments)
+    * [1️⃣ Primary Customers](#primary-customers)
+    * [2️⃣ Secondary Stakeholders (Future Expansion)](#secondary-stakeholders---future-expansion)
+
+16. [🏅 **Competitors and Ecosystem**](#competitors-and-ecosystem)
+
+17. [🔬 **Research Gaps**](#research-gaps)
+
+18. [💰 **Revenue Model**](#revenue-model)
+
+19. [🚧 **Challenges**](#challenges)
+
+20. [🔮 **Future Scope**](#future-scope)
+
+21. [🏁 **Conclusion**](#conclusion)
+
+---
+
+## Overview
+🗑️ Urban waste management systems rely on manual inspection and fixed schedules, leading to inefficiencies and hygiene risks.
+♻️ BinSight introduces a smart, scalable, and data-driven solution using IoT and analytics.
+
+---
+
+## Problem Statement
+* No real-time visibility into bin fill levels
+* Dependence on fixed collection schedules
+* Overflowing bins and odor complaints
+* Lack of gas and fire hazard detection
+* No real-time alerts or notifications when bins / waste zones require servicing
+* Inefficient manual monitoring
+* Poor workforce utilization
+
+<img width="700" height=auto alt="image" src="https://github.com/user-attachments/assets/df9fa833-d176-4366-a972-1271010217e9" />
+
+---
+
+## Proposed Solution
+💡 BinSight enables:
+* 📊 Real-time fill level tracking
+* ☁️ Gas detection for harmful emissions
+* 🔥 Flame detection for fire safety and removal of flammable waste
+* 📲 Centralized dashboard for tracking with bin / zone & user locations on a live map, bin / zone status cards, and real-time alerts for servicing
+* 🔮 Predictive analytics (next overflow time, anomaly detection - gas spike, fire risk) using ML
+
+---
+
+## Key Features
+* **Real-time Monitoring:** Continuous tracking of waste levels and environmental hazards.
+* **Multi-sensor Integration:** Combines ultrasonic, gas, and flame sensors for 360° safety.
+* **Predictive Analytics:** ML-driven forecasts for bin overflow and cleaning schedules.
+* **Scalable Design:** From individual apartments to city-wide modular campus deployments.
+* **Modular System:** Can be employed for single bins as well as multi-bin waste rooms/shafts.
+* **Cost-effective:** Built using low-power, affordable IoT hardware for maximum ROI.
+
+---
+
+## System Versions
+
+| 📦 Version | Power | Architecture | Best For | Components |
+| :--- | :--- | :--- | :--- | :--- |
+| **Single Bin – Battery + Solar** | 🔋 18650 Battery + ☀️ Solar | Device in single bin | Apartments, Retrofits | - ESP32 ✅<br>- Ultrasonic Sensor ✅<br>- Gas Sensor ✅<br>- Flame Sensor ✅<br>- Battery ✅<br>- Solar Panel ✅ |
+| **Single Bin – Mains + Backup + Solar** | 5V + 🔋 Battery (+ ☀️ Optional Solar) | Device in single bin | Larger Residential Complexes, Hospitals, etc. | - ESP32 ✅<br>- Ultrasonic Sensor ✅<br>- Gas Sensor ✅<br>- Flame Sensor ✅<br>- Battery ✅<br>- Solar Panel ⚠️ Optional |
+| **Modular System – Mains** | 5V Adapter | Central unit + wired sensors | Campuses, Corporate Parks, Malls, Large Event Venues | - Central ESP32 ✅<br>- Central Gas Sensor ✅<br>- Ultrasonic Sensors (per bin) ✅<br>- Flame Sensors (per bin) ✅<br>- Battery ❌<br>- Solar Panel ❌ |
+
+---
+
+## Tools and Technologies
+
+### Hardware Components
+* ESP32-WROOM-32
+* Ultrasonic Sensor (HC-SR04)
+* Gas Sensor (MQ-135)
+* Flame Sensor (KY-026)
+* Battery (Samsung INR18650-30Q 3.7V 3000mAh Li-NiMnCoO2) + Charge controller / Mains Power System
+* Solar Panels
+
+### Communication
+* WiFi
+* LoRa (optional)
+* MQTT Protocol
+
+### Software Stack
+* **Firmware:** Arduino / ESP-IDF
+* **Backend:** FastAPI
+* **Database:** MongoDB
+* **Frontend:** Flutter
+* **Maps:** Leaflet.js/OpenStreetMap (osm_search_and_pick: ^0.2.0)
+* **ML:** NumPy, Pandas
+* **Authentication/Login:** Firebase (Email, Google - Gmail)
+
+---
+
+## Technical Feasibility
+* **Low-Cost Infrastructure:** Utilizes affordable, mass-produced sensors and microcontrollers (ESP32), significantly lowering entry barriers.
+* **Standardized Protocols:** Implementation of MQTT and REST APIs ensures compatibility with existing cloud infrastructures.
+* **Energy Efficiency:** Deep-sleep modes in ESP32 allow for long-term battery operation, making the system viable for locations without power mains.
+* **Modular Scalability:** The decoupled architecture (Edge to Cloud) allows for easy expansion from 1 bin to 1000s without re-engineering the core logic.
+
+---
+
+## System Design
+
+### Data Flow
+Sensors → ESP32 Microcontroller → MQTT → FastAPI Backend → MongoDB Database → ML → Application/Dashboard → Alerts (Sensor thresholds crossed)
+
+----
+
+### Layered Architecture
+* **Perception Layer:** Sensors
+* **Edge Layer:** ESP32
+* **Network Layer:** MQTT/WiFi
+* **Cloud Layer:** Backend + DB
+* **Intelligence Layer:** ML
+* **Application Layer:** UI
+
+----
+
+### Hardware Design
+* Sensor → ESP32 connections
+* GPIO / ADC mapping
+* Power regulation
+
+----
+
+#### Hardware Block Diagrams
+
+##### 1) Single Bin Version – Battery + Solar
+<img width="817" height="779" alt="image" src="https://github.com/user-attachments/assets/833ce9c8-6b52-49a9-8739-1eaec0b7ce8d" />
+
+<br><br>
+
+##### 2) Single Bin Version – Mains + Backup + Solar
+<img width="647" height="810" alt="image" src="https://github.com/user-attachments/assets/cde5136b-a20d-4c24-8f6a-91128a6db477" />
+
+<br><br>
+
+##### 3) Modular Version - Mains
+<img width="2721" height="1502" alt="mermaid-diagram (4)" src="https://github.com/user-attachments/assets/41ede0c6-120e-4165-a329-f6d8aa3e3423" />
+
+----
+
+### Firmware Flow
+1. Initialize sensors
+2. Connect WiFi
+3. Read data
+4. Process
+5. Publish via MQTT
+6. Repeat
+
+----
+
+### MQTT Design
+**Topics:** `bins/{bin_id}/data` | `bins/{bin_id}/alert`  
+**Payload Example:** `{ "fill": 78, "gas": 120, "flame": false }`
+
+----
+
+### Database Schema
+
+#### Collections
+
+##### admins
+```
+{
+  "_id": "firebase_uid_of_admin",
+  "admin_id": "firebase_uid_of_admin",
+  "first_name": "First",
+  "last_name": "Last",
+  "name": "First Last",
+  "email": "adminmail@email.com",
+  "phone": "+1234567890",
+
+  "profile_image_url": "http://localhost:4000/images/admin/firebase_uid_of_admin",
+
+  "created_at": { "$date": "2023-10-26T10:00:00.000Z" },
+  "updated_at": { "$date": "2023-10-26T10:00:00.000Z" }
+}
+```
+##### workers
+```
+{
+  "_id": "firebase_uid_of_worker",
+  "worker_id": "firebase_uid_of_worker",
+  "first_name": "First",
+  "last_name": "Last",
+  "name": "First Last",
+  "email": "workermail@email.com",
+  "phone": "+1234567890",
+  "role": "worker",
+
+  "profile_image_url": "http://localhost:4000/images/worker/firebase_uid_of_worker",  
+
+"assigned_zones": [ // Optional
+    "ZONE_101",
+    "ZONE_102"
+  ],
+
+  "status": "active",
+  "current_location": {
+    "lat": 12.9716,
+    "lng": 77.5946
+  },
+
+  "last_active": { "$date": "2023-10-26T14:30:00.000Z" },
+  "created_at": { "$date": "2023-10-20T09:00:00.000Z" },
+  "updated_at": { "$date": "2023-10-26T14:30:00.000Z" }
+}
+```
+##### admin_images
+```
+{
+  "_id": "admin_firebase_uid_1_image_id", // MongoDB's default primary key
+  "admin_id": "firebase_uid_of_admin", // Reference to the admin document
+
+  // Image data
+  "filename": "admin_profile.jpg",
+  "content_type": "image/jpeg",
+  "size": 123456, // Size in bytes
+  "data": { "$binary": { "base64": "...", "subType": "00" } }, // Binary image data
+
+  "created_at": { "$date": "2023-10-26T10:00:00.000Z" }, 
+  "updated_at": { "$date": "2023-10-26T10:00:00.000Z" }
+}
+```
+##### worker_images
+```
+{
+  "_id": "worker_firebase_uid_1_image_id", // MongoDB's default primary key
+  "worker_id": "firebase_uid_of_worker", // Reference to the worker document
+
+  // Image data
+  "filename": "worker_profile.jpg",
+  "content_type": "image/jpeg",
+  "size": 789012, // Size in bytes
+  "data": { "$binary": { "base64": "...", "subType": "00" } }, // Binary image data
+
+  "created_at": { "$date": "2023-10-26T14:30:00.000Z" }, 
+  "updated_at": { "$date": "2023-10-26T14:30:00.000Z" }
+}
+```
+
+##### bins
+```
+{
+  "_id": "bin_generated_unique_id",
+  "bin_id": "bin_generated_unique_id", // App-generated unique ID
+  "type": "bin",
+  "name": "Bin 1", // Auto-generated by the app based on order
+  "location_description": "Floor 1 - Panini Building", // User-provided 
+  "zone_id": "ZONE_101", // Optional
+  "location": { // Coordinates, fixed at setup (e.g., from Leaflet.js)
+    "lat": 0.0,
+    "lng": 0.0
+  },
+
+  "fill_level": 75,
+  "gas_level": 120,
+  "flame": false,
+  "status": "normal/moderate/critical",
+
+  "last_updated": { "$date": "2023-10-26T15:00:00.000Z" },
+  "created_at": { "$date": "2023-10-25T08:00:00.000Z" }
+}
+```
+##### zones
+```
+{
+  "_id": "zone_generated_unique_id",
+  "zone_id": "zone_generated_unique_id",
+  "type": "zone", // Always "zone"
+  "name": "Zone 1", // Auto-generated by the app based on order
+  "location_description": "Block A - Floor 1", // User-provided
+  "location": { 
+    "lat": 0.0,
+    "lng": 0.0
+  },
+
+  "bin_count": 10, // No. of bins in the zone ( maintained by backend logic)
+  "avg_fill_level": 65, // Average fill level of bins in the zone
+  "gas_alert": false, // Boolean: true if any bin in zone has gas alert
+  "fire_alert": false, // Boolean: true if any bin in the zone has fire alert
+  "status": "normal/moderate/critical",
+
+  "last_updated": { "$date": "2023-10-26T15:05:00.000Z" },
+  "created_at": { "$date": "2023-10-25T09:00:00.000Z" }
+}
+```
+
+##### tasks
+```
+{
+  "_id": "TASK_001", 
+  "task_id": "TASK_001",
+  "worker_id": "firebase_uid_of_worker",
+
+  "bin_id": "bin_generated_unique_id", // Optional
+  "zone_id": "zone_generated_unique_id", // Optional
+  "description": "Empty bin at main lobby", // Details
+  "status": "pending/in_progress/completed/cancelled",
+  "priority": "low/medium/high/critical",
+
+  "assigned_at": { "$date": "2023-10-26T10:30:00.000Z" },
+  "completed_at": ISODate
+}
+```
+##### alerts
+```
+{
+  "_id": "ALERT_001", 
+  "alert_id": "ALERT_001",
+  "type": "overflow/gas/fire/offline/battery_low",
+
+  "bin_id": "bin_generated_unique_id", // Optional
+  "zone_id": "zone_generated_unique_id", // Optional
+  "message": "Bin is full",
+  "severity": "critical",
+  "is_resolved": false,
+
+  "created_at": { "$date": "2023-10-26T11:00:00.000Z" },
+  "resolved_by": firebase_uid,
+  "resolved_at": ISODate
+}
+```
+##### reports
+```
+{
+  "_id": "REPORT_001",
+  "report_id": "REPORT_001", 
+  "worker_id": "firebase_uid_of_worker",
+  "type": "bin_issue/zone_issue/general_feedback",
+
+  "bin_id": "bin_generated_unique_id", // Optional
+  "zone_id": "zone_generated_unique_id", // Optional
+  "issue": "Bin lid broken", 
+  "image_url": "http://localhost:4000/images/report/REPORT_001",
+  "status": "pending/in_progress/resolved/rejected",
+
+  "created_at": { "$date": "2023-10-26T12:00:00.000Z" },
+  "resolved_at": ISODate,
+  "resolved_by": firebase_uid of admin
+}
+```
+##### app_config
+```
+{
+  "_id": "main",
+  "config_id": "main",
+  "is_setup_complete": true,
+  "admin_uid": "firebase_uid_of_initial_admin",
+
+  "organization_name": "BinSight Deployment", // Can be a default or derived from organization_location
+  "organization_location": "displayName", // PickedData.displayName
+  "location_lat": 12.9497, // PickedData.lat
+  "location_lon": 77.6614, // PickedData.lon
+
+  "created_at": { "$date": "2023-10-26T09:00:00.000Z" },
+  "updated_at": { "$date": "2023-10-26T09:00:00.000Z" }
+}
+```
+
+----
+
+### API Design
+* `POST /data`
+* `GET /bins`
+* `GET /alerts`
+
+----
+
+### ML Pipeline
+* **🗑 Fill Level Prediction:** Weighted Moving Average, ARIMA
+* **📈 Anomaly Detection:** Z-score
+
+---
+
+## Application Features
+* Real-time monitoring of bins/zones.
+* Location-based tracking via map.
+* Alerts for overflow, gas, and fire hazards.
+* ML-based prediction for overflow and anomalies.
+* Historical data storage for trend analysis.
+* Graphical representation of bin metrics.
+
+---
+
+## User Interfaces
+
+### Admin (Supervisor / Facility Manager)
+* **📍 Live Map:** User & Bin/Zone Markers.
+* **🗑 Status Monitoring:** Bin/Dumping Zone status.
+* **📈 Predictive Analytics:** Overflow time estimates and anomaly detection.
+* **⚠️ Alerts:** Real-time notifications when sensor thresholds crossed.
+* **👨‍💻 Management:**
+    - 📝 Task List
+    - 👷 Worker management (View Workers & Tasks Assigned per Worker, Assign Tasks)
+    - 🔋 Device management (Locations, Battery Levels)
+* **🗂️ Reports:**
+    - Weekly bin/zone metrics/analytics, no. of alerts, no. of alerts resolved/pending/rejected
+    - Damaged Bins/Zones (With photos taken & uploaded by workers)
+* **🔎 Filters:** Filter by Fill, Air Quality, or Flames.
+
+### Worker (Sanitation Staff / Operator)
+* **📍 Live Map:** User & Bin/Zone Markers.
+* **🗑 Status Monitoring:** Real-time bin/zone status.
+* **📈 Predictive Analytics:** Overflow time estimates and anomaly detection.
+* **⚠️ Alerts:** Real-time notifications when sensor thresholds crossed.
+* **📝 Task List:** View assigned cleaning duties.
+* **✅ Confirmation:** Feature to mark alerts/reports as 'Resolved.'
+* **🗂️ Report Issue:** Report damaged bins/zones with photo uploads.
+* **🔎 Quick Filters:**
+   - Show Critical Only
+   - Show Nearby Bins/Zones (Within x radius)
+   - Show Assigned Tasks
+
+---
+
+## Single Bin and Zone Status Cards
+
+### Single Bin Card
+* **📊 Fill Level:** %
+* **☁️ Air Quality Index**
+* **🕒 Next Predicted Overflow:** “In Y hrs”
+* **🚦 Status:** Normal / Moderate / Critical
+
+### Zone Card
+* **🗑 Number of Bins**
+* **📊 Fill Level**
+* **☁️ Air Quality Index**
+* **🕒 Next Predicted Overflow  (Bin-specific):** "In Y hrs"
+* **🚦 Status:** Normal / Moderate / Critical
+
+---
+
+### Status Logic
+
+| Status    | Threshold | Single Bin Conditions | Zone Conditions |
+|----------|----------|----------------------|------------------------------|
+| **🟢 Normal** | Fill < 70%<br>Gas: Safe Range<br>Flame: None | - Fill Level < 70%<br>- Gas levels within safe range<br>- No flame detected<br>- No anomalies | - All bins within safe limits<br>- No gas/fire risk in zone<br>- No anomalies |
+| **🟠 Moderate** | Fill: 70–90%<br>Overflow < 4 hrs<br>Minor Gas/Fire Risk | - Fill Level between 70–90%<br>- Predicted overflow in < 4 hrs<br>- Slight increase in gas OR minor fire risk<br>- Non-critical anomaly | - Any bin predicted to overflow in < 4 hrs<br>- Moderate gas levels in zone<br>- Minor fire risk in any bin<br>- Non-critical anomaly |
+| **🔴 Critical** | Fill ≥ 90%<br>Gas: Unsafe<br>Flame:Detected | - Fill Level ≥ 90% (or full)<br>- Gas exceeds safe limits<br>- Flame detected<br>- High-risk anomaly | - Any bin is full<br>- High gas levels in zone<br>- Flame detected in any bin<br>- Multiple bins in moderate/critical state |
+
+---
+
+## Customer Segments
+
+### Primary Customers
+
+* 🧑‍🔧 **Facility Managers**
+
+#### Environments:
+* Apartments & Residential Complexes
+* Hotels, Resorts, & Luxury Gated Communities
+* Hospitals & Healthcare Facilities
+* Corporate Offices & Industrial Parks
+* Airports
+* Factories & Industrial Facilities
+* Shopping Malls
+* Railway Stations, Metro Stations
+* Event Venues - Stadiums, Banquet Halls, etc.
+
+### Secondary Stakeholders - Future Expansion
+* Waste companies
+* Municipal bodies
+* ESG teams
+
+---
+
+## Competitors and Ecosystem
+* **🆚 Competitors:** Bigbelly, Enevo, Ecube Labs, Nepra, Saahas Zero Waste.
+* **Limitations:** Often only monitor fill levels; limited analytics.
+* **BinSight Advantage:** Multi-sensor integration (fire/gas), predictive ML, and high scalability.
+
+---
+
+## Research Gaps
+* Lack of real-time comprehensive systems.
+* Weak predictive analytics in existing solutions.
+* Poor integration between different sensor types.
+
+---
+
+## Revenue Model
+* Hardware sales (Initial setup) - One-time
+* SaaS Subscription (Software and analytics access) - Half-yearly, Annually
+* Annual Maintenance Contracts (AMC).
+
+---
+
+## Challenges
+* **Power Management:** Maintaining long-term battery life for remote bins.
+* **Sensor Interference:** Environmental factors (steam, moisture) affecting ultrasonic readings.
+* **Network Reliability:** Connectivity issues in underground parking or high-density buildings.
+* **Durability:** Protecting hardware against harsh waste environments and physical impact.
+
+---
+
+## Future Scope
+* **VOC & Humidity Sensors:** For precise odor detection and moisture monitoring.
+* **Smart Route Optimization:** AI-driven path planning for collection vehicles based on real-time fill levels.
+* **Smart City Integration:** Direct API integration with municipal waste management grids.
+* **Computer Vision:** Advanced cameras for automated waste segregation at the source.
+
+---
+
+## Conclusion
+BinSight delivers a smart, scalable, and efficient waste monitoring solution combining IoT, analytics, and safety systems to modernize urban waste management.
