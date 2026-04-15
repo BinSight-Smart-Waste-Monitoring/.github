@@ -132,7 +132,7 @@
 * **Backend:** FastAPI
 * **Database:** MongoDB
 * **Frontend:** Flutter
-* **Maps:** Leaflet.js/OpenStreetMap (osm_search_and_pick: ^0.2.0)
+* **Maps:** flutter_osm_plugin, flutter_map
 * **ML:** NumPy, Pandas
 * **Authentication/Login:** Firebase (Email, Google - Gmail)
 
